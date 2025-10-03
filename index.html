@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Todoアプリ_練習用</title>
+    
+
+  </head>
+    
+  <body>
+  <h1>My ToDo App</h1><!-- Vueで指定された"app"要素、この中でのみVueが有効 -->
+<div id="app">
+  <input v-model="task" placeholder="タスクを入力…"><br>
+  タスク内容：{{ task }}
+  <button v-on:click="addTask">追加</button><br>
+  <button v-on:click="deleateTask">削除</button><br>
+  <p v-for="(todo, index) in todoList"    :key="index">
+  {{ index }} : {{ todo }}
+  </p>
+  
+</div>
+    <script src='https://unpkg.com/vue@3/dist/vue.global.js'></script><script  src="./script.js"></script>
+
+  </body>
+  
+</html>
