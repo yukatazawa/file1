@@ -1,30 +1,55 @@
-const { createApp, ref } = Vue;
-
-createApp({
-  setup: function () {
-    // Vue内部で使いたい変数は全て ref で定義する
-    const task = ref('');          // タスク内容を保持する
-    const todoList = ref([]);      // タスク一覧（配列）
-
-    // 関数はここ
-    function addTask() {
-      console.log('次のタスクが追加されました：', task.value);
-      // 配列の先頭に現在のタスク内容を追加する（最後尾の場合は push）
-      todoList.value.unshift(task.value);
-      console.log('現在のToDo一覧：', todoList.value);
+function goToLink(search_url) {
+  try {
+    if (typeof search_url === "string" && search_url.startsWith("http")) {
+      window.open(search_url, "_blank");
+    } else {
+      console.error("無効なurl:", search_url);
     }
-    
-    // 関数はここ(削除ボタン)
-    function deleateTask() {
-      console.log('すべてのタスクを消去しました');
-      // 配列の先頭に現在のタスク内容を追加する（最後尾の場合は push）
-      todoList.value = [];
-      console.log('すべてのタスクを消去しました');
-    }
-    
-    
-
-    // HTML から使いたい変数や関数を return で返す
-    return { task, todoList, addTask, deleateTask };
+  } catch(error) {
+    console.error("リンク遷移エラー:", error);
   }
-}).mount('#app'); // Vue が管理する一番外側の DOM 要素
+}
+
+//API Key 
+const apikey = ""
+
+//地図作成(初期位置)
+const map = L.map('map').setView([34.6862, 135.5196], 12);
+
+//OSM利用
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution:'&copy; OpenStreetMap contributors'
+}).addTo(map);
+
+
+//URL取得（大阪のカフェ20件）
+const url = `https://api.geoapify.com/v2/places?categories=catering.cafe&conditions=internet_access&filter=rect:135.38716537573399,34.7640324232946,135.61418242194353,34.58656310434866&limit=20&apiKey=${apikey}`;
+
+
+//API取得(夕会等,報告時以外は削除してます)
+axios
+  .get(url)
+  .then(response => {
+  const data = response.data;
+  console.log("取得データ:",data); 
+  
+  data.features.forEach(place => {
+    const [lon,lat] = place.geometry.coordinates;
+    const props = place.properties;
+    
+    const website = props.website || "#";
+    
+    const popupContent = `
+      <b>${props.name}</b></br>
+      
+      ${website !== "#" ? `<a href="${website}" target="_blank">公式サイトへ</a>` : ""}
+      `;
+    
+    L.marker([lat,lon])
+      .addTo(map)
+      .bindPopup(popupContent);
+  });      
+})    
+.catch(errror => {
+  console.error("取得エラー:", error);
+});

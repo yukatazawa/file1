@@ -3,24 +3,28 @@
 
   <head>
     <meta charset="UTF-8">
-    <title>Todoアプリ_練習用</title>
-    
+    <title>(最終稿)10/17_課題</title>
+    <link rel='stylesheet' href='https://unpkg.com/leaflet/dist/leaflet.css'><link rel="stylesheet" href="./style.css">
 
   </head>
     
   <body>
-  <h1>My ToDo App</h1><!-- Vueで指定された"app"要素、この中でのみVueが有効 -->
-<div id="app">
-  <input v-model="task" placeholder="タスクを入力…"><br>
-  タスク内容：{{ task }}
-  <button v-on:click="addTask">追加</button><br>
-  <button v-on:click="deleateTask">削除</button><br>
-  <p v-for="(todo, index) in todoList"    :key="index">
-  {{ index }} : {{ todo }}
-  </p>
+  <div id="container">
+  <h1>大阪のおすすめカフェ</h1>
+  <p>Geoapify×OpenStreetMapで気になる場所を探してみよう</p>
   
+  <div id="controls">
+    <button onclick="goToLink('https://rurubu.jp/andmore/article/15832')">もっと詳しく</button>
+  </div>
+  
+ <div class="map-card">
+  <div id="map"></div>
+ </div>
 </div>
-    <script src='https://unpkg.com/vue@3/dist/vue.global.js'></script><script  src="./script.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.37/vue.global.prod.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/axios/1.11.0/axios.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/vuetify/3.10.3/vuetify.min.js'></script><script  src="./script.js"></script>
 
   </body>
   
